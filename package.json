@@ -7,7 +7,7 @@
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "start": "node app.js"
   },
   "repository": {
@@ -22,7 +22,9 @@
   },
   "homepage": "https://github.com/laurencary/receipt-processor-challenge#readme",
   "dependencies": {
+    "chai": "^4.3.10",
     "express": "^4.18.2",
+    "memory-cache": "^0.2.0",
     "mocha": "^10.2.0"
   }
 }
