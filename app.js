@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const { v4: uuidv4 } = require('uuid');
 const cache = require('memory-cache');
 const scorer = require('./utils/scorer');
+const { isValidReceipt } = require('./utils/validation');
 
 const app = express();
 const port = 5000;
@@ -17,11 +18,15 @@ app.use(bodyParser.json())
 
 app.post('/receipts/process', async (req, res) => {
     try {
+        const receipt = req.body;
+        if (!isValidReceipt(receipt)) throw new Error("The receipt is invalid");
+
         const id = uuidv4();
-        receiptCache.put(id, req.body);
+        receiptCache.put(id, receipt);
         return res.json({ id });
     }
     catch (err) {
+        // console.log(err);
         return res.status(400).json({ description: "The receipt is invalid" })
     }
 });
