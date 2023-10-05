@@ -2,7 +2,7 @@ const { describe } = require("mocha");
 const chai = require("chai");
 const expect = chai.expect;
 
-const scorer = require('../src/utils/scorer');
+const scorer = require('../utils/scorer');
 const receipt1 = {
     "retailer": "Target",
     "purchaseDate": "2022-01-01",

@@ -12,8 +12,13 @@ const calculateReceiptScore = (receipt) => {
     return points
 }
 
+// One point for every alphanumeric character in the retailer name.
 const scoreRetailerName = (string) => (string.replace(/[^0-9a-z]/gi, '').length)
 
+/*
+    * 50 points if the total is a round dollar amount with no cents.
+    * 25 points if the total is a multiple of `0.25`.
+*/
 const scoreTotal = (totalStr) => {
     const total = parseFloat(totalStr);
     let points = 0;
@@ -27,7 +32,17 @@ const scoreTotal = (totalStr) => {
     return points;
 }
 
+// 5 points for every two items on the receipt.
 const scoreItems = (itemsArr) => (5 * Math.floor(itemsArr.length / 2))
+
+/*
+    If the trimmed length of the item description is a multiple of 3, 
+    multiply the price by `0.2` and round up to the nearest integer. 
+    The result is the number of points earned.
+*/
+const scoreDescriptions = (items) => {
+    return items.reduce((acc, item) => acc + _scoreDescription(item), 0);
+}
 
 const _scoreDescription = (item) => {
     const trimmed = item.shortDescription.trim();
@@ -39,15 +54,13 @@ const _scoreDescription = (item) => {
     }
 }
 
-const scoreDescriptions = (items) => {
-    return items.reduce((acc, item) => acc + _scoreDescription(item), 0);
-}
-
+// 6 points if the day in the purchase date is odd
 const scoreDate = (purchaseDate) => {
     const points = purchaseDate.slice(-2) % 2 === 1 ? 6 : 0
     return points;
 }
 
+// 10 points if the time of purchase is after 2:00pm and before 4:00pm
 const scoreTime = (purchaseTime) => {
     const afterTwo = purchaseTime > "14:00";
     const beforeFour = purchaseTime < "16:00";
