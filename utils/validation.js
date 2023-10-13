@@ -1,3 +1,5 @@
+const moment = require('moment')
+
 const receiptFields = {
     // "retailer": "^\\S+$",
     "purchaseDate": "^\\d{4}-\\d{2}-\\d{2}$",
@@ -24,7 +26,10 @@ const isValidReceipt = (receipt) => {
             if (item[field] === undefined || !pattern.test(item[field])) return false;
         }
     }
-    return true;
+
+    //purchase date validation
+
+    return moment(receipt.purchaseDate).isValid();
 }
 
 module.exports.isValidReceipt = isValidReceipt;
